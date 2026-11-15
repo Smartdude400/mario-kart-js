@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Turbo Karts — Sunset Speedway</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="game-root">
+    <canvas id="game"></canvas>
+
+    <!-- ============ HUD (during race) ============ -->
+    <div id="hud" class="hidden">
+      <div id="hud-tl">
+        <div id="lap">LAP 1/3</div>
+        <div id="position"><span id="pos-num">1</span><span id="pos-ord">st</span><span id="pos-of"> / 4</span></div>
+        <div id="timer">0:00.00</div>
+      </div>
+
+      <div id="hud-item">
+        <div id="item-box"><span id="item-glyph"></span></div>
+        <div id="item-label">[Space] Item</div>
+      </div>
+
+      <div id="hud-minimap">
+        <canvas id="minimap" width="190" height="150"></canvas>
+        <div id="poslist"></div>
+      </div>
+
+      <div id="hud-speedo">
+        <canvas id="speedo" width="150" height="150"></canvas>
+      </div>
+
+      <div id="drift-wrap"><div id="drift-bar"></div><div id="drift-label">DRIFT</div></div>
+
+      <div id="wrongway" class="hidden">⚠ WRONG WAY ⚠</div>
+
+      <div id="controls-hint">
+        <b>↑/W</b> Gas &nbsp; <b>↓/S</b> Brake &nbsp; <b>←→/AD</b> Steer &nbsp;
+        <b>Shift</b> Drift/Hop &nbsp; <b>Space</b> Item &nbsp; <b>Esc</b> Pause
+      </div>
+    </div>
+
+    <!-- ============ TITLE ============ -->
+    <div id="screen-title" class="screen">
+      <div class="title-glow">TURBO<span>KARTS</span></div>
+      <div class="subtitle">⚡ Sunset Speedway ⚡</div>
+      <button id="btn-start" class="big-btn">START</button>
+      <div class="title-foot">3 laps · 3 AI rivals · drift for turbo</div>
+    </div>
+
+    <!-- ============ CHARACTER / KART SELECT ============ -->
+    <div id="screen-select" class="screen hidden">
+      <h1>Choose your racer</h1>
+      <div class="select-cols">
+        <div class="select-col">
+          <h2>Character</h2>
+          <div id="char-list" class="card-row"></div>
+        </div>
+        <div class="select-col">
+          <h2>Kart</h2>
+          <div id="kart-list" class="card-row"></div>
+        </div>
+      </div>
+      <div id="stat-preview">
+        <h2 id="preview-name">—</h2>
+        <div id="stat-bars"></div>
+      </div>
+      <div class="select-actions">
+        <button id="btn-back" class="small-btn">◀ Back</button>
+        <button id="btn-race" class="big-btn">RACE!</button>
+      </div>
+    </div>
+
+    <!-- ============ COUNTDOWN ============ -->
+    <div id="overlay-countdown" class="overlay hidden"><span id="countdown-num">3</span></div>
+
+    <!-- ============ PAUSE ============ -->
+    <div id="overlay-pause" class="overlay hidden">
+      <div class="panel">
+        <h1>Paused</h1>
+        <button id="btn-resume" class="big-btn">Resume</button>
+        <button id="btn-quit" class="small-btn">Quit to Title</button>
+        <div class="mute-row"><label><input type="checkbox" id="chk-mute" /> Mute audio</label></div>
+      </div>
+    </div>
+
+    <!-- ============ RESULTS ============ -->
+    <div id="screen-results" class="screen hidden">
+      <h1 id="results-title">Race Complete!</h1>
+      <div id="results-list"></div>
+      <button id="btn-again" class="big-btn">RACE AGAIN</button>
+    </div>
+  </div>
+
+  <!-- modules: order matters (classic scripts share global scope) -->
+  <script src="js/utils.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/track.js"></script>
+  <script src="js/items.js"></script>
+  <script src="js/kart.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

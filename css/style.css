@@ -1,0 +1,147 @@
+/* ===================== Turbo Karts UI ===================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --hot: #ff5a3c; --gold: #ffd23c; --cool: #3cd6ff; --purp: #c97bff;
+  --ink: #1a1320; --panel: rgba(26, 19, 32, 0.82);
+}
+html, body { width: 100%; height: 100%; overflow: hidden; background: #0d0a12; }
+body {
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  color: #fff; user-select: none;
+}
+#game-root { position: relative; width: 100vw; height: 100vh; }
+#game { display: block; width: 100%; height: 100%; }
+.hidden { display: none !important; }
+
+/* ---------- generic screens / overlays ---------- */
+.screen {
+  position: absolute; inset: 0; z-index: 20;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 22px; text-align: center;
+  background:
+    radial-gradient(120% 90% at 50% 8%, #ff8a3c 0%, #ff5a6c 28%, #9b3c8c 58%, #2a1b4a 86%, #160f24 100%);
+}
+.overlay {
+  position: absolute; inset: 0; z-index: 30;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(8, 5, 14, 0.55); backdrop-filter: blur(2px);
+}
+.panel {
+  background: var(--panel); border: 2px solid rgba(255,255,255,0.18);
+  border-radius: 18px; padding: 34px 48px; display: flex; flex-direction: column;
+  align-items: center; gap: 18px; box-shadow: 0 18px 60px rgba(0,0,0,0.5);
+}
+
+/* ---------- title ---------- */
+.title-glow {
+  font-size: clamp(48px, 11vw, 130px); font-weight: 900; letter-spacing: 4px;
+  line-height: 0.92; color: #fff;
+  text-shadow: 0 0 18px var(--gold), 0 6px 0 #b3331f, 0 10px 24px rgba(0,0,0,0.5);
+}
+.title-glow span { display: block; color: var(--gold); -webkit-text-stroke: 2px #7a3c00; }
+.subtitle { font-size: clamp(18px, 3vw, 30px); font-weight: 700; color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,0.6); }
+.title-foot { opacity: 0.85; font-size: 15px; margin-top: 6px; }
+
+/* ---------- buttons ---------- */
+.big-btn {
+  font-family: inherit; font-weight: 900; font-size: 28px; letter-spacing: 2px;
+  color: #2a1300; cursor: pointer; padding: 14px 46px; border: none; border-radius: 14px;
+  background: linear-gradient(180deg, #ffe27a, var(--gold) 60%, #ff9f1c);
+  box-shadow: 0 6px 0 #b06a00, 0 12px 24px rgba(0,0,0,0.4); transition: transform .08s, box-shadow .08s;
+}
+.big-btn:hover { transform: translateY(-2px); }
+.big-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #b06a00; }
+.small-btn {
+  font-family: inherit; font-weight: 700; font-size: 16px; cursor: pointer;
+  color: #fff; padding: 10px 22px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.08);
+}
+.small-btn:hover { background: rgba(255,255,255,0.18); }
+
+/* ---------- select screen ---------- */
+#screen-select { gap: 16px; padding: 24px; justify-content: flex-start; padding-top: 4vh; }
+#screen-select h1 { font-size: clamp(26px, 4vw, 42px); text-shadow: 0 3px 0 #8a2a1c; }
+#screen-select h2 { font-size: 18px; opacity: 0.9; margin-bottom: 8px; }
+.select-cols { display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; }
+.card-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.card {
+  width: 150px; padding: 14px 12px; border-radius: 14px; cursor: pointer;
+  background: rgba(0,0,0,0.28); border: 3px solid rgba(255,255,255,0.16);
+  transition: transform .1s, border-color .1s, background .1s; text-align: center;
+}
+.card:hover { transform: translateY(-4px); background: rgba(0,0,0,0.4); }
+.card.sel { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(255,210,60,0.4), 0 10px 24px rgba(0,0,0,0.4); background: rgba(0,0,0,0.5); }
+.card .swatch { width: 56px; height: 56px; border-radius: 12px; margin: 0 auto 8px; box-shadow: inset 0 -8px 14px rgba(0,0,0,0.35); }
+.card .cname { font-weight: 800; font-size: 17px; }
+.card .cblurb { font-size: 11px; opacity: 0.78; margin-top: 4px; min-height: 28px; line-height: 1.25; }
+
+#stat-preview { background: rgba(0,0,0,0.3); border-radius: 14px; padding: 14px 22px; min-width: 320px; }
+#stat-preview h2 { font-size: 22px; color: var(--gold); margin-bottom: 8px; }
+.stat-line { display: flex; align-items: center; gap: 10px; margin: 5px 0; font-size: 14px; }
+.stat-line .lbl { width: 86px; text-align: right; opacity: 0.9; }
+.stat-track { flex: 1; height: 12px; background: rgba(255,255,255,0.12); border-radius: 6px; overflow: hidden; }
+.stat-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--cool), var(--gold)); transition: width .15s; }
+.select-actions { display: flex; gap: 18px; margin-top: 4px; }
+
+/* ---------- countdown ---------- */
+#countdown-num {
+  font-size: clamp(90px, 22vw, 260px); font-weight: 900; color: #fff;
+  text-shadow: 0 0 30px var(--gold), 0 8px 0 #b3331f;
+  animation: pop .5s ease-out;
+}
+@keyframes pop { from { transform: scale(2.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* ---------- HUD ---------- */
+#hud { position: absolute; inset: 0; z-index: 10; pointer-events: none; font-weight: 800; }
+#hud-tl { position: absolute; top: 16px; left: 18px; text-shadow: 0 2px 6px rgba(0,0,0,0.7); }
+#lap { font-size: 30px; letter-spacing: 1px; }
+#position { font-size: 22px; margin-top: 2px; }
+#pos-num { font-size: 40px; color: var(--gold); }
+#pos-of { opacity: 0.7; font-size: 18px; }
+#timer { font-size: 18px; opacity: 0.92; margin-top: 2px; font-variant-numeric: tabular-nums; }
+
+#hud-item { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); text-align: center; }
+#item-box {
+  width: 92px; height: 92px; border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  background: rgba(20,14,28,0.6); border: 3px solid rgba(255,255,255,0.35);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+}
+#item-glyph { font-size: 44px; line-height: 1; }
+#item-box.spin #item-glyph { animation: itspin .12s linear infinite; }
+@keyframes itspin { from { opacity: .4; } to { opacity: 1; } }
+#item-label { font-size: 12px; opacity: 0.85; margin-top: 4px; }
+
+#hud-minimap { position: absolute; top: 14px; right: 16px; text-align: right; }
+#minimap { background: rgba(10,7,16,0.5); border: 2px solid rgba(255,255,255,0.2); border-radius: 12px; }
+#poslist { margin-top: 8px; font-size: 13px; line-height: 1.5; text-align: left; display: inline-block;
+  background: rgba(10,7,16,0.5); border-radius: 10px; padding: 6px 10px; }
+#poslist .me { color: var(--gold); }
+
+#hud-speedo { position: absolute; bottom: 12px; right: 16px; }
+
+#drift-wrap { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+  width: 240px; height: 16px; background: rgba(10,7,16,0.5); border-radius: 10px; overflow: hidden;
+  border: 2px solid rgba(255,255,255,0.2); opacity: 0; transition: opacity .15s; }
+#drift-wrap.on { opacity: 1; }
+#drift-bar { height: 100%; width: 0%; background: var(--cool); transition: width .05s linear, background .1s; }
+#drift-label { position: absolute; inset: 0; text-align: center; font-size: 11px; line-height: 13px; letter-spacing: 2px; }
+
+#wrongway { position: absolute; top: 38%; left: 50%; transform: translateX(-50%);
+  font-size: 36px; color: #ff4040; text-shadow: 0 0 14px #ff0000, 0 3px 0 #600;
+  animation: blink .5s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0.25; } }
+
+#controls-hint { position: absolute; bottom: 10px; left: 16px; font-size: 12px; font-weight: 600;
+  opacity: 0.7; text-shadow: 0 1px 3px #000; }
+#controls-hint b { color: var(--gold); }
+
+/* ---------- results ---------- */
+#screen-results h1 { font-size: clamp(34px, 6vw, 60px); text-shadow: 0 4px 0 #8a2a1c; }
+#results-list { display: flex; flex-direction: column; gap: 8px; min-width: 360px; }
+.result-row { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-radius: 12px;
+  background: rgba(0,0,0,0.3); font-size: 20px; }
+.result-row.me { background: rgba(255,210,60,0.22); border: 2px solid var(--gold); }
+.result-row .rank { font-size: 26px; font-weight: 900; width: 46px; }
+.result-row .rname { flex: 1; text-align: left; font-weight: 800; }
+.result-row .rtime { font-variant-numeric: tabular-nums; opacity: 0.9; font-size: 16px; }
+.mute-row { font-size: 14px; opacity: 0.85; }
